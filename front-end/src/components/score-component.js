@@ -74,7 +74,7 @@ class Score extends React.Component {
         </label>
         <label>
           Score:
-          <input onChange={this.handleScoreChange} value={this.state.score} type="text"/>
+          <input onChange={this.handleScoreChange} value={this.state.score} type="number"/>
         </label>
         < button type='submit'>Add Score</button>
       </form>

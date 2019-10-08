@@ -6,10 +6,10 @@ const uuid = require ('uuid/v1');
 
 let score = [
   // {_id:uuid(), name: 'string', score:'number'},
-  {score: '10', name: 'corey', _id:uuid()},
-  {score: '20', name: 'gwen', _id:uuid()},
-  {score: '30', name: 'chloe', _id:uuid()},
-  {score: '40', name: 'caleb', _id:uuid()},
+  {score: 10, name: 'corey', _id:uuid()},
+  {score: 20, name: 'gwen', _id:uuid()},
+  {score: 30, name: 'chloe', _id:uuid()},
+  {score: 40, name: 'caleb', _id:uuid()},
 ];
 
 scoreRouter.get('/score', (request, response, next) => {
