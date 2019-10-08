@@ -6,6 +6,13 @@ import superagent from 'superagent';
 const API_URL = 'http://localhost:4000';
 
 class Score extends React.Component {
+  constructor(props){
+    super (props);
+
+    this.state = {};
+    this.state.name = '';
+    this.state.score = '';
+  }
 
   componentDidMount(){
       superagent.get(`${API_URL}/score`)
@@ -37,13 +44,23 @@ class Score extends React.Component {
     this.setState({score: event.target.value})
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    superagent.post(`${API_URL}/score`)
+    .send({name:this.state.name, score:this.state.score})
+    .set('Accept', 'application/json')
+    .then(results => {
+      this.props.loadStore(results.body);
+    })
+  }
+
   render() {
     return (
       <>
       <h1>High Scores</h1>
       <ul>
       {this.props.scores.map((score) => (
-        <li key={score._id} score={score}>
+        <li key={score._id}>
             <p>{score.name} -- {score.score}points -- <button onClick = {this.handleDelete}>Delete</button></p>
         </li>
           )
@@ -57,7 +74,7 @@ class Score extends React.Component {
         </label>
         <label>
           Score:
-          <input onChange={this.handleScoreChange} value={this.state.name} type="text"/>
+          <input onChange={this.handleScoreChange} value={this.state.score} type="text"/>
         </label>
         < button type='submit'>Add Score</button>
       </form>
