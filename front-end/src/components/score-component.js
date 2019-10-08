@@ -61,7 +61,7 @@ class Score extends React.Component {
       <ul>
       {this.props.scores.map((score) => (
         <li key={score._id}>
-            <p>{score.name} -- {score.score}points -- <button onClick = {this.handleDelete}>Delete</button></p>
+            <p>{score.name} -- {score.score}points -- <button value={score._id} onClick={this.handleDelete}>Delete</button></p>
         </li>
           )
         )}
