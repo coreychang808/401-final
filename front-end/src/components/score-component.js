@@ -7,16 +7,6 @@ const API_URL = 'http://localhost:4000';
 
 class Score extends React.Component {
 
-  // handleUpdate = (event) => {
-  //   event.preventDefault();
-    
-  //   superagent.patch(`${API_URL}/score/${event.target.value}`)
-  //     .send({name:'Kali', text: 'updated'})
-  //     .set('Accept', 'application/json')
-  //     .then(res=>{this.props.loadStore(res.body)})
-  //     .catch(console.log('not updating'));
-  // };
-
   componentDidMount(){
       superagent.get(`${API_URL}/score`)
         .then(results => {
@@ -28,38 +18,49 @@ class Score extends React.Component {
   handleDelete = (event) => {
     event.preventDefault();
 
-    superagent.delete(`${API_URL}/score/${this.props.score._id}`)
+    superagent.delete(`${API_URL}/score`)
+      .send({id: event.target.value})
+      .set('Accept', 'application/json')
       .then(results => {
         this.props.loadStore(results.body);
       })
-      .catch(console.log);
+      .catch(console.log('broken'));
   };
 
+  handleNameChange = (event) => {
+    event.preventDefault();
+    this.setState({name: event.target.value});
+  }
+
+  handleScoreChange = (event) => {
+    event.preventDefault();
+    this.setState({score: event.target.value})
+  }
+
   render() {
-    console.log(this.props.scores)
     return (
       <>
       <h1>High Scores</h1>
       <ul>
       {this.props.scores.map((score) => (
-        <li key={score._id}>
-            <p>{score.name}-{score.score}<button onClick = {this.handleDelete}>Delete</button></p>
+        <li key={score._id} score={score}>
+            <p>{score.name} -- {score.score}points -- <button onClick = {this.handleDelete}>Delete</button></p>
         </li>
           )
         )}
       </ul>
 
       <form onSubmit = {this.handleSubmit}>
-  <label>
-    Name:
-    <input type="text"/>
-  </label>
-  <label>
-    Score:
-    <input type="text" name="name" />
-  </label>
-  <button>Add Score</button>
-</form>
+        <label>
+          Name:
+          <input onChange={this.handleNameChange} value={this.state.name} type="text"/>
+        </label>
+        <label>
+          Score:
+          <input onChange={this.handleScoreChange} value={this.state.name} type="text"/>
+        </label>
+        < button type='submit'>Add Score</button>
+      </form>
     </>);
     }
 }
@@ -72,12 +73,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadStore : (scores) => {
     dispatch({
       type: 'SCORE_LOAD',
-      payload: scores,
-    });
-  },
-  updateStore : (scores) => {
-    dispatch({
-      type: 'SCORE_UPDATE',
       payload: scores,
     });
   },

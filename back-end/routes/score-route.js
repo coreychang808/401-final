@@ -13,18 +13,40 @@ let score = [
 ];
 
 scoreRouter.get('/score', (request, response, next) => {
+  score = score.sort((a,b) => {
+    let first = a.score;
+    let second = b.score;
+
+    if(first > second){
+      return -1;
+    }
+    if(second > first){
+      return 1;
+    }
+    else{
+      return 0;
+    }
+  })
   response.status(200).json(score);
 });
 
 scoreRouter.post('/score', (request, response) => {
+  let newScore = request.body;
+  newScore._id = uuid();
+  score.push(newScore);
   response.status(200).json(score);
 });
 
-scoreRouter.delete('/score/:id', (request, response) => {
-  score = score.filter(scores => scores._id !== request.params.id);
+scoreRouter.delete('/score', (request, response) => {
+  score = score.filter(scores => scores._id !== request.body.id);
 
   response.status(200).json(score);
 });
+
+scoreRouter.get('/scores-bigger-than/:value', (request, response) =>{
+  score = score.filter(scores => scores.score > request.params.value)
+  response.status(200).json(players);
+})
 
 
 module.exports = scoreRouter;
