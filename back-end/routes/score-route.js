@@ -32,6 +32,7 @@ scoreRouter.get('/score', (request, response, next) => {
 
 scoreRouter.post('/score', (request, response) => {
   let newScore = request.body;
+  newScore.score = parseInt(newScore.score);
   newScore._id = uuid();
   score.push(newScore);
   response.status(200).json(score);
@@ -45,7 +46,7 @@ scoreRouter.delete('/score', (request, response) => {
 
 scoreRouter.get('/scores-bigger-than/:value', (request, response) =>{
   score = score.filter(scores => scores.score > request.params.value)
-  response.status(200).json(players);
+  response.status(200).json(score);
 })
 
 
